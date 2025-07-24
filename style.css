@@ -33,6 +33,8 @@ h1 {
   text-shadow: 1px 1px 5px rgba(0, 128, 0, 0.3);
   letter-spacing: 1.5px;
   font-size: 1.8rem;
+  background-color: #c5fffc;
+  border-radius: 10px;
 }
 
 /* Bottone aggiungi ricetta */
@@ -113,6 +115,8 @@ h1 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+   background-color: black;
+   border-radius: 8px;
 }
 
 /* Container bottoni Modifica + Elimina + Apri */

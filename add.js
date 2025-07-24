@@ -54,11 +54,12 @@ function addIngredient(data) {
 }
 
 // -------------------------
-// AZIONI
+// AZIONI CON DRAG & DROP
 function addAction(data = { actionText: '', time: '' }) {
   const container = document.getElementById('actionsContainer');
   const div = document.createElement('div');
   div.classList.add('action-item');
+  div.setAttribute('draggable', 'true');
   div.innerHTML = `
     <textarea class="phase-action" placeholder="Descrizione azione...">${data.actionText}</textarea>
     <div class="action-time-container">
@@ -108,6 +109,77 @@ function addAction(data = { actionText: '', time: '' }) {
 
   div.querySelector('.delete-action').addEventListener('click', () => {
     div.remove();
+    updateActionNumbers();
+  });
+
+  // DRAG & DROP
+  div.addEventListener('dragstart', e => {
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', null); // Firefox fix
+    dragged = div;
+    setTimeout(() => div.classList.add('dragging'), 0);
+  });
+
+  div.addEventListener('dragend', e => {
+    dragged = null;
+    div.classList.remove('dragging');
+    removeDropIndicators();
+    updateActionNumbers();
+  });
+
+  div.addEventListener('dragover', e => {
+    e.preventDefault();
+    const bounding = div.getBoundingClientRect();
+    const offset = e.clientY - bounding.top;
+    const half = bounding.height / 2;
+    removeDropIndicators();
+    if (offset < half) {
+      div.classList.add('drag-over-top');
+      dragInsertBefore = true;
+    } else {
+      div.classList.add('drag-over-bottom');
+      dragInsertBefore = false;
+    }
+  });
+
+  div.addEventListener('dragleave', e => {
+    removeDropIndicators();
+  });
+
+  div.addEventListener('drop', e => {
+    e.preventDefault();
+    removeDropIndicators();
+    if (!dragged || dragged === div) return;
+    const container = div.parentNode;
+    if (dragInsertBefore) {
+      container.insertBefore(dragged, div);
+    } else {
+      container.insertBefore(dragged, div.nextSibling);
+    }
+    updateActionNumbers();
+  });
+}
+
+let dragged = null;
+let dragInsertBefore = true;
+
+function removeDropIndicators() {
+  document.querySelectorAll('.drag-over-top').forEach(el => el.classList.remove('drag-over-top'));
+  document.querySelectorAll('.drag-over-bottom').forEach(el => el.classList.remove('drag-over-bottom'));
+}
+
+function updateActionNumbers() {
+  const container = document.getElementById('actionsContainer');
+  const items = container.querySelectorAll('.action-item');
+  items.forEach((item, i) => {
+    const textarea = item.querySelector('textarea.phase-action');
+    if (textarea) {
+      // Rimuovo numero precedente se presente e ricreo
+      let text = textarea.value.trim();
+      // Rimuovo eventuale numero all'inizio: "1. testo" -> "testo"
+      text = text.replace(/^\d+\.\s*/, '');
+      textarea.value = `${i + 1}. ${text}`;
+    }
   });
 }
 
@@ -134,6 +206,8 @@ function loadRecipe(index) {
     const actContainer = document.getElementById('actionsContainer');
     actContainer.innerHTML = '';
     recipe.actions.forEach(act => addAction(act));
+
+    updateActionNumbers();
   }
 }
 
@@ -142,7 +216,7 @@ function getCurrentData() {
   const ingredients = [];
   document.querySelectorAll('.ingredient-item').forEach(item => {
     const nameInput = item.querySelector('.ingredient-name');
-    const qtyInput = item.querySelector('.ingredient-qty');
+    const qtyInput = item.querySelector('.ingredient-quantity');
     const unitInput = item.querySelector('.ingredient-unit');
 
     const name = nameInput ? nameInput.value.trim() : '';
@@ -158,7 +232,10 @@ function getCurrentData() {
     const timeSelectInput = item.querySelector('.phase-time-select');
     const customTimeInput = item.querySelector('.custom-time-input');
 
-    const actionText = actionTextInput ? actionTextInput.value.trim() : '';
+    let actionText = actionTextInput ? actionTextInput.value.trim() : '';
+    // Rimuovo il numero iniziale tipo "1. "
+    actionText = actionText.replace(/^\d+\.\s*/, '');
+
     const timeSelect = timeSelectInput ? timeSelectInput.value : '';
     const customTime = customTimeInput ? customTimeInput.value.trim() : '';
 
@@ -192,7 +269,7 @@ function saveRecipe() {
   const ingredients = [];
   document.querySelectorAll('.ingredient-item').forEach(item => {
     const nameInput = item.querySelector('.ingredient-name');
-    const qtyInput = item.querySelector('.ingredient-qty');
+    const qtyInput = item.querySelector('.ingredient-quantity');
     const unitInput = item.querySelector('.ingredient-unit');
 
     const name = nameInput ? nameInput.value.trim() : '';
@@ -213,7 +290,10 @@ function saveRecipe() {
     const timeSelectInput = item.querySelector('.phase-time-select');
     const customTimeInput = item.querySelector('.custom-time-input');
 
-    const actionText = actionTextInput ? actionTextInput.value.trim() : '';
+    let actionText = actionTextInput ? actionTextInput.value.trim() : '';
+    // Rimuovo il numero iniziale tipo "1. "
+    actionText = actionText.replace(/^\d+\.\s*/, '');
+
     const timeSelect = timeSelectInput ? timeSelectInput.value : '';
     const customTime = customTimeInput ? customTimeInput.value.trim() : '';
 

@@ -35,6 +35,8 @@ h1 {
   margin-bottom: 18px;
   user-select: none;
   text-align: center;
+  background-color: #c5fffc;
+  border-radius: 10px;
 }
 
 .profile-pic-container {
