@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aggiungi / Modifica Ricetta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="add.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🍳 Aggiungi Ricetta 🍳</h1>
+
+    <div class="profile-pic-container">
+      <label for="profilePicInput" class="profile-pic-label">📸 Scegli immagine ricetta</label>
+      <input type="file" id="profilePicInput" accept="image/*" />
+      <img id="profilePicPreview" alt="Anteprima immagine" />
+    </div>
+
+    <input id="recipeTitle" type="text" placeholder="Inserisci il titolo della ricetta" />
+
+    <h2>🧂 Ingredienti</h2>
+    <div id="ingredientsContainer" class="ingredients-list"></div>
+    <button id="addIngredientBtn" class="btn-add">+ Aggiungi Ingrediente</button>
+
+    <h2>⚙️ Azioni</h2>
+    <div id="actionsContainer" class="actions-list"></div>
+    <button id="addActionBtn" class="btn-add">+ Aggiungi Azione</button>
+
+    <div class="btn-container">
+      <button id="saveBtn" class="btn-primary">💾 Salva</button>
+      <button id="backBtn" class="btn-danger">⬅️ Indietro</button>
+    </div>
+  </div>
+
+  <!-- Template ingrediente -->
+  <template id="ingredientTemplate">
+    <div class="ingredient-item">
+      <input type="text" class="ingredient-name" placeholder="Ingrediente" />
+      <input type="number" class="ingredient-quantity" placeholder="Quantità" min="0" step="any" />
+      <select class="ingredient-unit">
+        <option value="unità">unità</option>
+        <option value="g">g</option>
+        <option value="kg">kg</option>
+        <option value="l">l</option>
+        <option value="ml">ml</option>
+      </select>
+      <button class="delete-ingredient" title="Elimina ingrediente">🗑️</button>
+    </div>
+  </template>
+
+  <!-- Template azione -->
+  <template id="actionTemplate">
+    <div class="action-item">
+      <div class="action-header">
+        <span class="action-number"></span>
+        <button class="delete-action" title="Elimina azione">🗑️</button>
+      </div>
+      <textarea class="phase-action" placeholder="Descrivi l'azione..."></textarea>
+      <div class="action-time-container">
+        <select class="phase-time-select">
+          <option>5 min</option>
+          <option>10 min</option>
+          <option>15 min</option>
+          <option>30 min</option>
+          <option>1 ora</option>
+          <option>Personalizzato</option>
+        </select>
+        <input type="time" class="custom-time-input" />
+      </div>
+    </div>
+  </template>
+
+  <script src="add.js"></script>
+</body>
+</html>
