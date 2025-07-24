@@ -1,4 +1,3 @@
-const phasesContainer = document.getElementById('phasesContainer');
 const addIngredientBtn = document.getElementById('addIngredientBtn');
 const addActionBtn = document.getElementById('addActionBtn');
 const saveBtn = document.getElementById('saveBtn');
@@ -29,14 +28,16 @@ profilePicInput.addEventListener('change', () => {
 
 // -------------------------
 // INGREDIENTI
-function addIngredient(data = { name: '', qty: '', unit: 'g' }) {
+function addIngredient(data) {
+  data = data || { name: '', qty: '', unit: '' };
   const container = document.getElementById('ingredientsContainer');
   const div = document.createElement('div');
   div.classList.add('ingredient-item');
   div.innerHTML = `
     <input type="text" class="ingredient-name" placeholder="Ingrediente" value="${data.name}" />
-    <input type="number" min="0" step="any" class="ingredient-qty" placeholder="Quantità" value="${data.qty}" />
+    <input type="number" min="0" step="any" class="ingredient-quantity" placeholder="Quantità" value="${data.qty}" />
     <select class="ingredient-unit">
+      <option value="" ${data.unit === '' ? 'selected' : ''}>—</option>
       <option value="g" ${data.unit === 'g' ? 'selected' : ''}>g</option>
       <option value="kg" ${data.unit === 'kg' ? 'selected' : ''}>kg</option>
       <option value="mg" ${data.unit === 'mg' ? 'selected' : ''}>mg</option>
@@ -47,7 +48,6 @@ function addIngredient(data = { name: '', qty: '', unit: 'g' }) {
   `;
   container.appendChild(div);
 
-  // elimina ingrediente
   div.querySelector('.delete-ingredient').addEventListener('click', () => {
     div.remove();
   });
@@ -63,6 +63,7 @@ function addAction(data = { actionText: '', time: '' }) {
     <textarea class="phase-action" placeholder="Descrizione azione...">${data.actionText}</textarea>
     <div class="action-time-container">
       <select class="phase-time-select">
+        <option>-- : --</option>
         <option>5 min</option>
         <option>10 min</option>
         <option>15 min</option>
@@ -79,8 +80,8 @@ function addAction(data = { actionText: '', time: '' }) {
   const timeSelect = div.querySelector('.phase-time-select');
   const customInput = div.querySelector('.custom-time-input');
 
-  // Imposta tempo se presente
   const presetOptions = Array.from(timeSelect.options).map(o => o.value);
+
   if (presetOptions.includes(data.time)) {
     timeSelect.value = data.time;
     customInput.style.display = 'none';
@@ -90,12 +91,11 @@ function addAction(data = { actionText: '', time: '' }) {
     customInput.style.display = 'inline-block';
     customInput.value = data.time;
   } else {
-    timeSelect.value = '5 min';
+    timeSelect.value = '-- : --';
     customInput.style.display = 'none';
     customInput.value = '';
   }
 
-  // cambio selezione tempo
   timeSelect.addEventListener('change', () => {
     if (timeSelect.value === 'Personalizzato') {
       customInput.style.display = 'inline-block';
@@ -106,7 +106,6 @@ function addAction(data = { actionText: '', time: '' }) {
     }
   });
 
-  // elimina azione
   div.querySelector('.delete-action').addEventListener('click', () => {
     div.remove();
   });
@@ -118,7 +117,7 @@ function loadRecipe(index) {
   const recipes = JSON.parse(localStorage.getItem('recipes') || '[]');
   if (recipes[index]) {
     const recipe = recipes[index];
-    recipeTitleInput.textContent = recipe.title || '';
+    recipeTitleInput.value = recipe.title || '';
     currentImageBase64 = recipe.image || '';
     if (currentImageBase64) {
       profilePicPreview.src = currentImageBase64;
@@ -128,36 +127,45 @@ function loadRecipe(index) {
       profilePicPreview.style.display = 'none';
     }
 
-    // ingredienti
     const ingContainer = document.getElementById('ingredientsContainer');
     ingContainer.innerHTML = '';
     recipe.ingredients.forEach(ing => addIngredient(ing));
 
-    // azioni
     const actContainer = document.getElementById('actionsContainer');
     actContainer.innerHTML = '';
     recipe.actions.forEach(act => addAction(act));
   }
 }
 
-// prende lo stato attuale serializzato per confronto modifiche
 function getCurrentData() {
-  const title = recipeTitleInput.textContent.trim();
+  const title = recipeTitleInput.value.trim();
   const ingredients = [];
   document.querySelectorAll('.ingredient-item').forEach(item => {
-    const name = item.querySelector('.ingredient-name').value.trim();
-    const qty = item.querySelector('.ingredient-qty').value.trim();
-    const unit = item.querySelector('.ingredient-unit').value;
+    const nameInput = item.querySelector('.ingredient-name');
+    const qtyInput = item.querySelector('.ingredient-qty');
+    const unitInput = item.querySelector('.ingredient-unit');
+
+    const name = nameInput ? nameInput.value.trim() : '';
+    const qty = qtyInput ? qtyInput.value.trim() : '';
+    const unit = unitInput ? unitInput.value : '';
+
     if (name || qty || unit) ingredients.push({ name, qty, unit });
   });
+
   const actions = [];
   document.querySelectorAll('.action-item').forEach(item => {
-    const actionText = item.querySelector('.phase-action').value.trim();
-    const timeSelect = item.querySelector('.phase-time-select').value;
-    const customTime = item.querySelector('.custom-time-input').value.trim();
+    const actionTextInput = item.querySelector('.phase-action');
+    const timeSelectInput = item.querySelector('.phase-time-select');
+    const customTimeInput = item.querySelector('.custom-time-input');
+
+    const actionText = actionTextInput ? actionTextInput.value.trim() : '';
+    const timeSelect = timeSelectInput ? timeSelectInput.value : '';
+    const customTime = customTimeInput ? customTimeInput.value.trim() : '';
+
     const time = (timeSelect === 'Personalizzato') ? customTime : timeSelect;
     actions.push({ actionText, time });
   });
+
   return {
     title,
     image: currentImageBase64,
@@ -175,7 +183,7 @@ function hasUnsavedChanges() {
 }
 
 function saveRecipe() {
-  const title = recipeTitleInput.textContent.trim();
+  const title = recipeTitleInput.value.trim();
   if (!title) {
     alert('Devi inserire un titolo!');
     return;
@@ -183,9 +191,14 @@ function saveRecipe() {
 
   const ingredients = [];
   document.querySelectorAll('.ingredient-item').forEach(item => {
-    const name = item.querySelector('.ingredient-name').value.trim();
-    const qty = item.querySelector('.ingredient-qty').value.trim();
-    const unit = item.querySelector('.ingredient-unit').value;
+    const nameInput = item.querySelector('.ingredient-name');
+    const qtyInput = item.querySelector('.ingredient-qty');
+    const unitInput = item.querySelector('.ingredient-unit');
+
+    const name = nameInput ? nameInput.value.trim() : '';
+    const qty = qtyInput ? qtyInput.value.trim() : '';
+    const unit = unitInput ? unitInput.value : '';
+
     if (name || qty || unit) ingredients.push({ name, qty, unit });
   });
 
@@ -196,15 +209,21 @@ function saveRecipe() {
 
   const actions = [];
   document.querySelectorAll('.action-item').forEach(item => {
-    const actionText = item.querySelector('.phase-action').value.trim();
-    const timeSelect = item.querySelector('.phase-time-select').value;
-    const customTime = item.querySelector('.custom-time-input').value.trim();
+    const actionTextInput = item.querySelector('.phase-action');
+    const timeSelectInput = item.querySelector('.phase-time-select');
+    const customTimeInput = item.querySelector('.custom-time-input');
+
+    const actionText = actionTextInput ? actionTextInput.value.trim() : '';
+    const timeSelect = timeSelectInput ? timeSelectInput.value : '';
+    const customTime = customTimeInput ? customTimeInput.value.trim() : '';
+
     let time = '';
     if (timeSelect === 'Personalizzato') {
       time = customTime;
     } else {
       time = timeSelect;
     }
+
     if (actionText || time) {
       actions.push({ actionText, time });
     }
