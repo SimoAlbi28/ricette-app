@@ -3,6 +3,38 @@ const btnAdd = document.getElementById('btnAdd');
 
 const defaultImage = '/img/basic.png';
 
+// Funzione helper per formattare il tempo in modo corretto
+function formatTimeText(timeStr) {
+  if (!timeStr || timeStr.trim() === '') return '-- : --';
+
+  if (timeStr.includes(':')) {
+    const parts = timeStr.split(':');
+    if (parts.length === 2) {
+      const min = parseInt(parts[0], 10);
+      const sec = parseInt(parts[1], 10);
+      if (!isNaN(min) && !isNaN(sec)) {
+        if (sec > 0) {
+          return `${min} min ${sec} sec`;
+        } else {
+          return `${min} min`;
+        }
+      }
+    }
+    return '-- : --';
+  }
+
+  if (/^\d+\s*min$/i.test(timeStr.trim())) {
+    return timeStr.trim();
+  }
+
+  const numMatch = timeStr.match(/\d+/);
+  if (numMatch) {
+    return `${numMatch[0]} min`;
+  }
+
+  return '-- : --';
+}
+
 function loadRecipes() {
   const recipes = JSON.parse(localStorage.getItem('recipes') || '[]');
   recipeList.innerHTML = '';
@@ -159,21 +191,7 @@ function loadRecipes() {
         actionBox.appendChild(actionText);
 
         // Gestione timer formattato
-        let timeText = '-- : --';
-        if (step.time && step.time.trim() !== '') {
-          if (step.time.includes(':')) {
-            const parts = step.time.split(':');
-            if (parts.length === 2) {
-              const h = parseInt(parts[0], 10) || 0;
-              const m = parseInt(parts[1], 10) || 0;
-              const totalMin = h * 60 + m;
-              timeText = `min : ${totalMin}`;
-            }
-          } else {
-            const match = step.time.match(/\d+/);
-            timeText = match ? `min : ${match[0]}` : '-- : --';
-          }
-        }
+        const timeText = formatTimeText(step.time);
 
         const timeSpan = document.createElement('span');
         timeSpan.className = 'action-time';
@@ -320,9 +338,10 @@ function saveDraggedOrder(container, recipeIndex) {
     const timeText = timeSpan ? timeSpan.textContent : '';
 
     let time = '';
-    if (timeText && timeText.startsWith('min : ')) {
-      time = timeText.replace('min : ', '');
-      if (time === '-- : --') time = '';
+    if (timeText && timeText !== '-- : --') {
+      // Trasforma "x min y sec" in formato testo da salvare, se vuoi potresti fare parsing più preciso qui
+      // Ma per ora lo salvo così com'è
+      time = timeText;
     }
 
     newOrder.push({ actionText: text, time: time });

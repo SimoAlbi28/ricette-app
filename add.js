@@ -5,14 +5,16 @@ const backBtn = document.getElementById('backBtn');
 const recipeTitleInput = document.getElementById('recipeTitle');
 const profilePicInput = document.getElementById('profilePicInput');
 const profilePicPreview = document.getElementById('profilePicPreview');
+const deleteRecipeBtn = document.getElementById('deleteRecipeBtn');
 
 let currentImageBase64 = '';
 let initialData = null;
 const urlParams = new URLSearchParams(window.location.search);
 const editIndex = urlParams.has('edit') ? parseInt(urlParams.get('edit')) : null;
 
-// -------------------------
-// GESTIONE IMMAGINE
+let dragged = null;
+let dragInsertBefore = true;
+
 profilePicInput.addEventListener('change', () => {
   const file = profilePicInput.files[0];
   if (file) {
@@ -26,10 +28,7 @@ profilePicInput.addEventListener('change', () => {
   }
 });
 
-// -------------------------
-// INGREDIENTI
-function addIngredient(data) {
-  data = data || { name: '', qty: '', unit: '' };
+function addIngredient(data = { name: '', qty: '', unit: '' }) {
   const container = document.getElementById('ingredientsContainer');
   const div = document.createElement('div');
   div.classList.add('ingredient-item');
@@ -43,18 +42,20 @@ function addIngredient(data) {
       <option value="mg" ${data.unit === 'mg' ? 'selected' : ''}>mg</option>
       <option value="l" ${data.unit === 'l' ? 'selected' : ''}>l</option>
       <option value="ml" ${data.unit === 'ml' ? 'selected' : ''}>ml</option>
+      <option value="unità" ${data.unit === 'unità' ? 'selected' : ''}>unità</option>
     </select>
     <button class="delete-ingredient" title="Elimina ingrediente">🗑️</button>
   `;
   container.appendChild(div);
 
   div.querySelector('.delete-ingredient').addEventListener('click', () => {
-    div.remove();
+    const name = div.querySelector('.ingredient-name').value.trim() || 'Ingrediente senza nome';
+    if (confirm(`Confermi di voler eliminare l'ingrediente: "${name}"?`)) {
+      div.remove();
+    }
   });
 }
 
-// -------------------------
-// AZIONI CON DRAG & DROP
 function addAction(data = { actionText: '', time: '' }) {
   const container = document.getElementById('actionsContainer');
   const div = document.createElement('div');
@@ -80,7 +81,6 @@ function addAction(data = { actionText: '', time: '' }) {
 
   const timeSelect = div.querySelector('.phase-time-select');
   const customInput = div.querySelector('.custom-time-input');
-
   const presetOptions = Array.from(timeSelect.options).map(o => o.value);
 
   if (presetOptions.includes(data.time)) {
@@ -108,14 +108,17 @@ function addAction(data = { actionText: '', time: '' }) {
   });
 
   div.querySelector('.delete-action').addEventListener('click', () => {
-    div.remove();
-    updateActionNumbers();
+    let actionText = div.querySelector('.phase-action').value.trim();
+    actionText = actionText.replace(/^\d+\.\s*/, '') || 'Azione senza descrizione';
+    if (confirm(`Confermi di voler eliminare l'azione: "${actionText}"?`)) {
+      div.remove();
+      updateActionNumbers();
+    }
   });
 
-  // DRAG & DROP
   div.addEventListener('dragstart', e => {
     e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', null); // Firefox fix
+    e.dataTransfer.setData('text/plain', null);
     dragged = div;
     setTimeout(() => div.classList.add('dragging'), 0);
   });
@@ -160,9 +163,6 @@ function addAction(data = { actionText: '', time: '' }) {
   });
 }
 
-let dragged = null;
-let dragInsertBefore = true;
-
 function removeDropIndicators() {
   document.querySelectorAll('.drag-over-top').forEach(el => el.classList.remove('drag-over-top'));
   document.querySelectorAll('.drag-over-bottom').forEach(el => el.classList.remove('drag-over-bottom'));
@@ -174,17 +174,13 @@ function updateActionNumbers() {
   items.forEach((item, i) => {
     const textarea = item.querySelector('textarea.phase-action');
     if (textarea) {
-      // Rimuovo numero precedente se presente e ricreo
       let text = textarea.value.trim();
-      // Rimuovo eventuale numero all'inizio: "1. testo" -> "testo"
       text = text.replace(/^\d+\.\s*/, '');
       textarea.value = `${i + 1}. ${text}`;
     }
   });
 }
 
-// -------------------------
-// SALVA E CARICA
 function loadRecipe(index) {
   const recipes = JSON.parse(localStorage.getItem('recipes') || '[]');
   if (recipes[index]) {
@@ -233,7 +229,6 @@ function getCurrentData() {
     const customTimeInput = item.querySelector('.custom-time-input');
 
     let actionText = actionTextInput ? actionTextInput.value.trim() : '';
-    // Rimuovo il numero iniziale tipo "1. "
     actionText = actionText.replace(/^\d+\.\s*/, '');
 
     const timeSelect = timeSelectInput ? timeSelectInput.value : '';
@@ -291,7 +286,6 @@ function saveRecipe() {
     const customTimeInput = item.querySelector('.custom-time-input');
 
     let actionText = actionTextInput ? actionTextInput.value.trim() : '';
-    // Rimuovo il numero iniziale tipo "1. "
     actionText = actionText.replace(/^\d+\.\s*/, '');
 
     const timeSelect = timeSelectInput ? timeSelectInput.value : '';
@@ -338,8 +332,6 @@ function saveRecipe() {
   window.location.href = 'index.html';
 }
 
-// -------------------------
-// EVENT LISTENER BOTTONI
 addIngredientBtn.addEventListener('click', () => addIngredient());
 addActionBtn.addEventListener('click', () => addAction());
 saveBtn.addEventListener('click', saveRecipe);
@@ -353,8 +345,23 @@ backBtn.addEventListener('click', () => {
   }
 });
 
-// -------------------------
-// CARICAMENTO INIZIALE
+if (deleteRecipeBtn) {
+  deleteRecipeBtn.addEventListener('click', () => {
+    const title = recipeTitleInput.value.trim() || 'Ricetta senza nome';
+    if (confirm(`Confermi di voler eliminare la ricetta: "${title}"?`)) {
+      const recipes = JSON.parse(localStorage.getItem('recipes') || '[]');
+      if (editIndex !== null && recipes[editIndex]) {
+        recipes.splice(editIndex, 1);
+        localStorage.setItem('recipes', JSON.stringify(recipes));
+        alert('Ricetta eliminata!');
+        window.location.href = 'index.html';
+      } else {
+        alert('Nessuna ricetta da eliminare.');
+      }
+    }
+  });
+}
+
 if (editIndex !== null) {
   loadRecipe(editIndex);
 } else {
