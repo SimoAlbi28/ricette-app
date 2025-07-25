@@ -93,6 +93,19 @@ function loadRecipes() {
 
     mainRow.appendChild(img);
     mainRow.appendChild(title);
+
+    // Aggiungo il numero di persone solo se diverso da '-' e '0' e definito
+    if (recipe.persons && recipe.persons !== '-' && recipe.persons !== '0') {
+      const personsInfo = document.createElement('div');
+      personsInfo.className = 'recipe-persons';
+      personsInfo.textContent = `Persone: ${recipe.persons}`;
+      personsInfo.style.color = '#00504a';
+      personsInfo.style.fontWeight = '600';
+      personsInfo.style.fontSize = '0.9rem';
+      personsInfo.style.marginTop = '4px';
+      mainRow.appendChild(personsInfo);
+    }
+
     mainRow.appendChild(btns);
 
     card.appendChild(mainRow);
@@ -339,8 +352,6 @@ function saveDraggedOrder(container, recipeIndex) {
 
     let time = '';
     if (timeText && timeText !== '-- : --') {
-      // Trasforma "x min y sec" in formato testo da salvare, se vuoi potresti fare parsing più preciso qui
-      // Ma per ora lo salvo così com'è
       time = timeText;
     }
 
