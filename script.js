@@ -104,7 +104,7 @@ function loadRecipes() {
 
     // -------------------- INGREDIENTI --------------------
     const ingrSectionTitle = document.createElement('h3');
-    ingrSectionTitle.textContent = '🧂 Ingredienti';
+    ingrSectionTitle.textContent = '🧂 Ingredienti 🧂';
     Object.assign(ingrSectionTitle.style, {
       color: '#008079',
       border: '2px solid black',
@@ -158,7 +158,7 @@ function loadRecipes() {
 
     // -------------------- AZIONI --------------------
     const actionsSectionTitle = document.createElement('h3');
-    actionsSectionTitle.textContent = '⚙️ Azioni';
+    actionsSectionTitle.textContent = '⚙️ Azioni ⚙️';
     Object.assign(actionsSectionTitle.style, {
       color: '#008079',
       border: '2px solid black',
