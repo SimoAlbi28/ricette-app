@@ -15,7 +15,7 @@ const editIndex = urlParams.has('edit') ? parseInt(urlParams.get('edit')) : null
 let dragged = null;
 let dragInsertBefore = true;
 
-// --- CREA SELECT "Pers:" SOTTO IL TITOLO con stile migliorato ---
+// --- CREA SELECT "Pers:" SOTTO IL TITOLO con range ---
 const personsContainer = document.createElement('div');
 personsContainer.style.marginTop = '8px';
 personsContainer.style.marginBottom = '16px';
@@ -33,7 +33,7 @@ personsLabel.style.color = '#333';
 
 const personsSelect = document.createElement('select');
 personsSelect.id = 'personsSelect';
-personsSelect.style.width = '70px';
+personsSelect.style.width = '100px';
 personsSelect.style.padding = '6px 10px';
 personsSelect.style.border = '1.8px solid #008079';
 personsSelect.style.borderRadius = '6px';
@@ -54,12 +54,13 @@ personsSelect.addEventListener('blur', () => {
   personsSelect.style.boxShadow = 'none';
 });
 
-for (let i = 1; i <= 10; i++) {
+const ranges = ['-', '1 - 4', '4 - 8', '8 - 10', '10 - 12'];
+ranges.forEach(range => {
   const option = document.createElement('option');
-  option.value = i.toString();
-  option.textContent = i.toString();
+  option.value = range;
+  option.textContent = range;
   personsSelect.appendChild(option);
-}
+});
 
 personsContainer.appendChild(personsLabel);
 personsContainer.appendChild(personsSelect);
