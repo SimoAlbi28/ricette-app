@@ -15,6 +15,58 @@ const editIndex = urlParams.has('edit') ? parseInt(urlParams.get('edit')) : null
 let dragged = null;
 let dragInsertBefore = true;
 
+// --- CREA SELECT "Pers:" SOTTO IL TITOLO con stile migliorato ---
+const personsContainer = document.createElement('div');
+personsContainer.style.marginTop = '8px';
+personsContainer.style.marginBottom = '16px';
+personsContainer.style.display = 'flex';
+personsContainer.style.alignItems = 'center';
+personsContainer.style.gap = '10px';
+personsContainer.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+
+const personsLabel = document.createElement('label');
+personsLabel.setAttribute('for', 'personsSelect');
+personsLabel.textContent = 'Pers:';
+personsLabel.style.fontWeight = '600';
+personsLabel.style.fontSize = '1rem';
+personsLabel.style.color = '#333';
+
+const personsSelect = document.createElement('select');
+personsSelect.id = 'personsSelect';
+personsSelect.style.width = '70px';
+personsSelect.style.padding = '6px 10px';
+personsSelect.style.border = '1.8px solid #008079';
+personsSelect.style.borderRadius = '6px';
+personsSelect.style.backgroundColor = '#f0fdfa';
+personsSelect.style.color = '#00504a';
+personsSelect.style.fontWeight = '500';
+personsSelect.style.fontSize = '1rem';
+personsSelect.style.cursor = 'pointer';
+personsSelect.style.transition = 'border-color 0.3s ease';
+
+personsSelect.addEventListener('focus', () => {
+  personsSelect.style.borderColor = '#00bfa5';
+  personsSelect.style.boxShadow = '0 0 5px #00bfa5';
+});
+
+personsSelect.addEventListener('blur', () => {
+  personsSelect.style.borderColor = '#008079';
+  personsSelect.style.boxShadow = 'none';
+});
+
+for (let i = 1; i <= 10; i++) {
+  const option = document.createElement('option');
+  option.value = i.toString();
+  option.textContent = i.toString();
+  personsSelect.appendChild(option);
+}
+
+personsContainer.appendChild(personsLabel);
+personsContainer.appendChild(personsSelect);
+
+recipeTitleInput.parentNode.insertBefore(personsContainer, recipeTitleInput.nextSibling);
+// --- FINE SELECT Pers ---
+
 profilePicInput.addEventListener('change', () => {
   const file = profilePicInput.files[0];
   if (file) {
@@ -209,6 +261,8 @@ function loadRecipe(index) {
 
 function getCurrentData() {
   const title = recipeTitleInput.value.trim();
+  const persons = personsSelect.value; // prendo valore pers selezionato
+
   const ingredients = [];
   document.querySelectorAll('.ingredient-item').forEach(item => {
     const nameInput = item.querySelector('.ingredient-name');
@@ -240,6 +294,7 @@ function getCurrentData() {
 
   return {
     title,
+    persons, // aggiunto
     image: currentImageBase64,
     ingredients,
     actions
@@ -308,11 +363,14 @@ function saveRecipe() {
     return;
   }
 
+  const personsValue = personsSelect.value || '1';
+
   const recipes = JSON.parse(localStorage.getItem('recipes') || '[]');
 
   if (editIndex !== null && recipes[editIndex]) {
     recipes[editIndex] = {
       title,
+      persons: personsValue, // salvo il valore pers
       image: currentImageBase64,
       ingredients,
       actions
@@ -320,6 +378,7 @@ function saveRecipe() {
   } else {
     recipes.push({
       title,
+      persons: personsValue,
       image: currentImageBase64,
       ingredients,
       actions
