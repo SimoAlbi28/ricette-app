@@ -67,11 +67,11 @@ function loadRecipes() {
 
     centerContainer.appendChild(title);
 
-    // Mostra persone solo se > 0
+    // Mostra solo numero persone se presente e diverso da '-' o '0'
     if (recipe.persons && recipe.persons !== '-' && recipe.persons !== '0') {
       const persons = document.createElement('div');
       persons.className = 'recipe-persons';
-      persons.textContent = `Persone: ${recipe.persons}`;
+      persons.textContent = recipe.persons;
       centerContainer.appendChild(persons);
     }
 
@@ -111,11 +111,12 @@ function loadRecipes() {
 
     card.appendChild(mainRow);
 
-    // ... (resto del codice rimane uguale, dettagli, azioni, ecc)
+    // resto codice dettagli ecc...
 
     recipeList.appendChild(card);
   });
 }
+
 
 function deleteRecipe(index) {
   const recipes = JSON.parse(localStorage.getItem('recipes') || '[]');
