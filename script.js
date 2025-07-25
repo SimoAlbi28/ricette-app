@@ -48,78 +48,35 @@ function loadRecipes() {
     const card = document.createElement('div');
     card.className = 'recipe-card';
 
-    // -------------------- RIGA PRINCIPALE --------------------
+    // RIGA PRINCIPALE
     const mainRow = document.createElement('div');
     mainRow.className = 'main-row';
-    Object.assign(mainRow.style, {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      gap: '15px',
-      padding: '10px 15px',
-      borderBottom: '1px solid #ccc',
-    });
 
-    // Immagine
     const img = document.createElement('img');
     img.className = 'recipe-image';
     img.src = recipe.image || defaultImage;
     img.alt = 'Immagine ricetta';
-    Object.assign(img.style, {
-      width: '70px',
-      height: '70px',
-      objectFit: 'cover',
-      borderRadius: '8px',
-      flexShrink: '0',
-    });
 
-    // Container centro con titolo e persone
+    // CONTENITORE CENTRALE (titolo + persone)
     const centerContainer = document.createElement('div');
-    Object.assign(centerContainer.style, {
-      flexGrow: '1',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      gap: '4px',
-      overflow: 'hidden',
-    });
+    centerContainer.className = 'center-container';
 
     const title = document.createElement('div');
     title.className = 'recipe-title';
     title.textContent = recipe.title.toUpperCase();
-    Object.assign(title.style, {
-      fontWeight: '700',
-      fontSize: '1.1rem',
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      color: '#004d40',
-    });
 
     centerContainer.appendChild(title);
 
+    // Mostra persone solo se > 0
     if (recipe.persons && recipe.persons !== '-' && recipe.persons !== '0') {
-      const personsInfo = document.createElement('div');
-      personsInfo.className = 'recipe-persons';
-      personsInfo.textContent = `Persone: ${recipe.persons}`;
-      Object.assign(personsInfo.style, {
-        fontWeight: '500',
-        fontSize: '0.85rem',
-        color: '#00796b',
-        opacity: '0.8',
-        whiteSpace: 'nowrap',
-      });
-      centerContainer.appendChild(personsInfo);
+      const persons = document.createElement('div');
+      persons.className = 'recipe-persons';
+      persons.textContent = `Persone: ${recipe.persons}`;
+      centerContainer.appendChild(persons);
     }
 
-    // Container bottoni a destra
     const btns = document.createElement('div');
     btns.className = 'btns-container';
-    Object.assign(btns.style, {
-      display: 'flex',
-      gap: '8px',
-      flexShrink: '0',
-    });
 
     const openBtn = document.createElement('button');
     openBtn.className = 'btn-apri';
@@ -148,17 +105,15 @@ function loadRecipes() {
     btns.appendChild(editBtn);
     btns.appendChild(delBtn);
 
-    // Metto tutto nella riga principale
     mainRow.appendChild(img);
     mainRow.appendChild(centerContainer);
     mainRow.appendChild(btns);
 
     card.appendChild(mainRow);
 
-    // (segue tutto il resto come prima...)
-    // ... Dettagli, ingredienti, azioni ecc
+    // ... (resto del codice rimane uguale, dettagli, azioni, ecc)
 
-    // Resto codice identico...
+    recipeList.appendChild(card);
   });
 }
 
