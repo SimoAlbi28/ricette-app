@@ -16,56 +16,75 @@ let dragged = null;
 let dragInsertBefore = true;
 
 // --- CREA SELECT "Pers:" SOTTO IL TITOLO con range ---
-const personsContainer = document.createElement('div');
-personsContainer.style.marginTop = '8px';
-personsContainer.style.marginBottom = '16px';
-personsContainer.style.display = 'flex';
-personsContainer.style.alignItems = 'center';
-personsContainer.style.gap = '10px';
-personsContainer.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+function creaSelectPersRange() {
+  const personsContainer = document.createElement('div');
+  personsContainer.style.marginTop = '8px';
+  personsContainer.style.marginBottom = '16px';
+  personsContainer.style.display = 'flex';
+  personsContainer.style.alignItems = 'center';
+  personsContainer.style.gap = '8px';
+  personsContainer.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
 
-const personsLabel = document.createElement('label');
-personsLabel.setAttribute('for', 'personsSelect');
-personsLabel.textContent = 'Pers:';
-personsLabel.style.fontWeight = '600';
-personsLabel.style.fontSize = '1rem';
-personsLabel.style.color = '#333';
+  const personsLabel = document.createElement('label');
+  personsLabel.setAttribute('for', 'personsSelect');
+  personsLabel.textContent = 'Pers:';
+  personsLabel.style.fontWeight = '600';
+  personsLabel.style.fontSize = '1rem';
+  personsLabel.style.color = '#222';
 
-const personsSelect = document.createElement('select');
-personsSelect.id = 'personsSelect';
-personsSelect.style.width = '100px';
-personsSelect.style.padding = '6px 10px';
-personsSelect.style.border = '1.8px solid #008079';
-personsSelect.style.borderRadius = '6px';
-personsSelect.style.backgroundColor = '#f0fdfa';
-personsSelect.style.color = '#00504a';
-personsSelect.style.fontWeight = '500';
-personsSelect.style.fontSize = '1rem';
-personsSelect.style.cursor = 'pointer';
-personsSelect.style.transition = 'border-color 0.3s ease';
+  const personsSelect = document.createElement('select');
+  personsSelect.id = 'personsSelect';
 
-personsSelect.addEventListener('focus', () => {
-  personsSelect.style.borderColor = '#00bfa5';
-  personsSelect.style.boxShadow = '0 0 5px #00bfa5';
+  // CSS migliorato
+  Object.assign(personsSelect.style, {
+    width: '110px',
+    padding: '6px 12px',
+    border: '1px solid #222',
+    borderRadius: '5px',
+    backgroundColor: '#fff',
+    color: '#222',
+    fontWeight: '500',
+    fontSize: '1rem',
+    cursor: 'pointer',
+    transition: 'border-color 0.25s ease, box-shadow 0.25s ease',
+    outline: 'none',
+    appearance: 'none',
+    WebkitAppearance: 'none',
+    MozAppearance: 'none',
+    backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'8\' viewBox=\'0 0 12 8\'%3E%3Cpath fill=\'%23222\' d=\'M6 8L0 0h12z\'/%3E%3C/svg%3E")',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right 10px center',
+    backgroundSize: '12px 8px',
+  });
+
+  personsSelect.addEventListener('focus', () => {
+    personsSelect.style.borderColor = '#008079';
+    personsSelect.style.boxShadow = '0 0 6px #008079aa';
+  });
+
+  personsSelect.addEventListener('blur', () => {
+    personsSelect.style.borderColor = '#222';
+    personsSelect.style.boxShadow = 'none';
+  });
+
+  const ranges = ['-', '1 - 4', '4 - 8', '8 - 10', '10 - 12'];
+  ranges.forEach(range => {
+    const option = document.createElement('option');
+    option.value = range;
+    option.textContent = range;
+    personsSelect.appendChild(option);
+  });
+
+  personsContainer.appendChild(personsLabel);
+  personsContainer.appendChild(personsSelect);
+
+  recipeTitleInput.parentNode.insertBefore(personsContainer, recipeTitleInput.nextSibling);
+}
+
+window.addEventListener('load', () => {
+  creaSelectPersRange();
 });
 
-personsSelect.addEventListener('blur', () => {
-  personsSelect.style.borderColor = '#008079';
-  personsSelect.style.boxShadow = 'none';
-});
-
-const ranges = ['-', '1 - 4', '4 - 8', '8 - 10', '10 - 12'];
-ranges.forEach(range => {
-  const option = document.createElement('option');
-  option.value = range;
-  option.textContent = range;
-  personsSelect.appendChild(option);
-});
-
-personsContainer.appendChild(personsLabel);
-personsContainer.appendChild(personsSelect);
-
-recipeTitleInput.parentNode.insertBefore(personsContainer, recipeTitleInput.nextSibling);
 // --- FINE SELECT Pers ---
 
 profilePicInput.addEventListener('change', () => {
