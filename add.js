@@ -15,78 +15,6 @@ const editIndex = urlParams.has('edit') ? parseInt(urlParams.get('edit')) : null
 let dragged = null;
 let dragInsertBefore = true;
 
-// --- CREA SELECT "Pers:" SOTTO IL TITOLO con range ---
-function creaSelectPersRange() {
-  const personsContainer = document.createElement('div');
-  personsContainer.style.marginTop = '8px';
-  personsContainer.style.marginBottom = '16px';
-  personsContainer.style.display = 'flex';
-  personsContainer.style.alignItems = 'center';
-  personsContainer.style.gap = '8px';
-  personsContainer.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
-
-  const personsLabel = document.createElement('label');
-  personsLabel.setAttribute('for', 'personsSelect');
-  personsLabel.textContent = 'Pers:';
-  personsLabel.style.fontWeight = '600';
-  personsLabel.style.fontSize = '1rem';
-  personsLabel.style.color = '#222';
-
-  const personsSelect = document.createElement('select');
-  personsSelect.id = 'personsSelect';
-
-  // CSS migliorato
-  Object.assign(personsSelect.style, {
-    width: '110px',
-    padding: '6px 12px',
-    border: '1px solid #222',
-    borderRadius: '5px',
-    backgroundColor: '#fff',
-    color: '#222',
-    fontWeight: '500',
-    fontSize: '1rem',
-    cursor: 'pointer',
-    transition: 'border-color 0.25s ease, box-shadow 0.25s ease',
-    outline: 'none',
-    appearance: 'none',
-    WebkitAppearance: 'none',
-    MozAppearance: 'none',
-    backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'8\' viewBox=\'0 0 12 8\'%3E%3Cpath fill=\'%23222\' d=\'M6 8L0 0h12z\'/%3E%3C/svg%3E")',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'right 10px center',
-    backgroundSize: '12px 8px',
-  });
-
-  personsSelect.addEventListener('focus', () => {
-    personsSelect.style.borderColor = '#008079';
-    personsSelect.style.boxShadow = '0 0 6px #008079aa';
-  });
-
-  personsSelect.addEventListener('blur', () => {
-    personsSelect.style.borderColor = '#222';
-    personsSelect.style.boxShadow = 'none';
-  });
-
-  const ranges = ['-', '1 - 4', '4 - 8', '8 - 10', '10 - 12'];
-  ranges.forEach(range => {
-    const option = document.createElement('option');
-    option.value = range;
-    option.textContent = range;
-    personsSelect.appendChild(option);
-  });
-
-  personsContainer.appendChild(personsLabel);
-  personsContainer.appendChild(personsSelect);
-
-  recipeTitleInput.parentNode.insertBefore(personsContainer, recipeTitleInput.nextSibling);
-}
-
-window.addEventListener('load', () => {
-  creaSelectPersRange();
-});
-
-// --- FINE SELECT Pers ---
-
 profilePicInput.addEventListener('change', () => {
   const file = profilePicInput.files[0];
   if (file) {
@@ -106,7 +34,7 @@ function addIngredient(data = { name: '', qty: '', unit: '' }) {
   div.classList.add('ingredient-item');
   div.innerHTML = `
     <input type="text" class="ingredient-name" placeholder="Ingrediente" value="${data.name}" />
-    <input type="number" min="0" step="any" class="ingredient-quantity" placeholder="Q" value="${data.qty}" />
+    <input type="number" min="0" step="any" class="ingredient-quantity" placeholder="Quantità" value="${data.qty}" />
     <select class="ingredient-unit">
       <option value="" ${data.unit === '' ? 'selected' : ''}>—</option>
       <option value="g" ${data.unit === 'g' ? 'selected' : ''}>g</option>
@@ -281,8 +209,6 @@ function loadRecipe(index) {
 
 function getCurrentData() {
   const title = recipeTitleInput.value.trim();
-  const persons = personsSelect.value; // prendo valore pers selezionato
-
   const ingredients = [];
   document.querySelectorAll('.ingredient-item').forEach(item => {
     const nameInput = item.querySelector('.ingredient-name');
@@ -314,7 +240,6 @@ function getCurrentData() {
 
   return {
     title,
-    persons, // aggiunto
     image: currentImageBase64,
     ingredients,
     actions
@@ -383,14 +308,11 @@ function saveRecipe() {
     return;
   }
 
-  const personsValue = personsSelect.value || '1';
-
   const recipes = JSON.parse(localStorage.getItem('recipes') || '[]');
 
   if (editIndex !== null && recipes[editIndex]) {
     recipes[editIndex] = {
       title,
-      persons: personsValue, // salvo il valore pers
       image: currentImageBase64,
       ingredients,
       actions
@@ -398,7 +320,6 @@ function saveRecipe() {
   } else {
     recipes.push({
       title,
-      persons: personsValue,
       image: currentImageBase64,
       ingredients,
       actions
