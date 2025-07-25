@@ -48,7 +48,7 @@ function loadRecipes() {
     const card = document.createElement('div');
     card.className = 'recipe-card';
 
-    // RIGA PRINCIPALE
+    // -------------------- RIGA PRINCIPALE --------------------
     const mainRow = document.createElement('div');
     mainRow.className = 'main-row';
 
@@ -57,23 +57,9 @@ function loadRecipes() {
     img.src = recipe.image || defaultImage;
     img.alt = 'Immagine ricetta';
 
-    // CONTENITORE CENTRALE (titolo + persone)
-    const centerContainer = document.createElement('div');
-    centerContainer.className = 'center-container';
-
     const title = document.createElement('div');
     title.className = 'recipe-title';
     title.textContent = recipe.title.toUpperCase();
-
-    centerContainer.appendChild(title);
-
-    // Mostra solo numero persone se presente e diverso da '-' o '0'
-    if (recipe.persons && recipe.persons !== '-' && recipe.persons !== '0') {
-      const persons = document.createElement('div');
-      persons.className = 'recipe-persons';
-      persons.textContent = recipe.persons;
-      centerContainer.appendChild(persons);
-    }
 
     const btns = document.createElement('div');
     btns.className = 'btns-container';
@@ -106,17 +92,156 @@ function loadRecipes() {
     btns.appendChild(delBtn);
 
     mainRow.appendChild(img);
-    mainRow.appendChild(centerContainer);
+    mainRow.appendChild(title);
     mainRow.appendChild(btns);
 
     card.appendChild(mainRow);
 
-    // resto codice dettagli ecc...
+    // -------------------- DETTAGLI --------------------
+    const details = document.createElement('div');
+    details.className = 'recipe-details';
+    details.style.display = 'none';
 
+    // -------------------- INGREDIENTI --------------------
+    const ingrSectionTitle = document.createElement('h3');
+    ingrSectionTitle.textContent = '🧂 Ingredienti 🧂';
+    Object.assign(ingrSectionTitle.style, {
+      color: '#008079',
+      border: '2px solid black',
+      marginTop: '20px',
+      marginBottom: '10px',
+      backgroundColor: '#a8fadf',
+      padding: '8px',
+      borderRadius: '8px'
+    });
+
+    details.appendChild(ingrSectionTitle);
+
+    const ingrContainer = document.createElement('div');
+    ingrContainer.className = 'ingredients-container';
+    ingrContainer.style.backgroundColor = '#ffffff';
+
+    if (recipe.ingredients && recipe.ingredients.length > 0) {
+      recipe.ingredients.forEach(ing => {
+        const ingrBox = document.createElement('div');
+        ingrBox.className = 'ingredient-box';
+        Object.assign(ingrBox.style, {
+          backgroundColor: '#d0f5f0',
+          border: '2px solid black',
+          borderRadius: '5px',
+          padding: '8px',
+          margin: '5px 0',
+          color: '#008079'
+        });
+
+        const quant = ing.qty || ing.quantity || '';
+        const unit = ing.unit || '';
+        ingrBox.textContent = `${ing.name} --> ${quant} ${unit}`.trim();
+
+        ingrContainer.appendChild(ingrBox);
+      });
+    } else {
+      const noIngr = document.createElement('p');
+      noIngr.textContent = 'Nessun ingrediente inserito';
+      ingrContainer.appendChild(noIngr);
+    }
+
+    details.appendChild(ingrContainer);
+
+    // LINEA DI SEPARAZIONE
+    const separator = document.createElement('hr');
+    Object.assign(separator.style, {
+      borderTop: '2px solid #000',
+      margin: '25px 0'
+    });
+    details.appendChild(separator);
+
+    // -------------------- AZIONI --------------------
+    const actionsSectionTitle = document.createElement('h3');
+    actionsSectionTitle.textContent = '⚙️ Azioni ⚙️';
+    Object.assign(actionsSectionTitle.style, {
+      color: '#008079',
+      border: '2px solid black',
+      marginTop: '0',
+      marginBottom: '10px',
+      backgroundColor: '#a8faf6',
+      padding: '8px',
+      borderRadius: '8px'
+    });
+
+    details.appendChild(actionsSectionTitle);
+
+    const actionsContainer = document.createElement('div');
+    actionsContainer.className = 'actions-container';
+    actionsContainer.style.backgroundColor = '#fcfcfc';
+
+    if (recipe.actions && recipe.actions.length > 0) {
+      recipe.actions.forEach((step, i) => {
+        const actionBox = document.createElement('div');
+        actionBox.className = 'action-box';
+        actionBox.style.marginBottom = '8px';
+
+        const actionText = document.createElement('p');
+        actionText.className = 'action-text';
+        const desc = (typeof step === 'object' && step !== null)
+          ? step.actionText || step.description || JSON.stringify(step)
+          : step;
+
+        actionText.textContent = `${i + 1}. ${desc}`;
+        actionBox.appendChild(actionText);
+
+        // Gestione timer formattato
+        const timeText = formatTimeText(step.time);
+
+        const timeSpan = document.createElement('span');
+        timeSpan.className = 'action-time';
+        timeSpan.textContent = timeText;
+        actionBox.appendChild(timeSpan);
+
+        actionsContainer.appendChild(actionBox);
+      });
+    } else {
+      const noActions = document.createElement('p');
+      noActions.textContent = 'Nessuna azione inserita';
+      actionsContainer.appendChild(noActions);
+    }
+
+    details.appendChild(actionsContainer);
+
+    // Abilita drag&drop per le azioni
+    enableDragDrop(actionsContainer, index);
+
+    // -------------------- CHIUDI --------------------
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'btn-danger';
+    closeBtn.textContent = 'Chiudi';
+    Object.assign(closeBtn.style, {
+      marginTop: '20px',
+      display: 'block',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      padding: '8px 30px',
+      fontWeight: '600'
+    });
+
+    closeBtn.addEventListener('click', () => {
+      details.style.display = 'none';
+      openBtn.style.display = 'inline-block';
+    });
+
+    details.appendChild(closeBtn);
+
+    // Eventi
+    openBtn.addEventListener('click', () => {
+      details.style.display = 'flex';
+      details.style.flexDirection = 'column';
+      openBtn.style.display = 'none';
+    });
+
+    card.appendChild(details);
     recipeList.appendChild(card);
   });
 }
-
 
 function deleteRecipe(index) {
   const recipes = JSON.parse(localStorage.getItem('recipes') || '[]');
@@ -214,6 +339,8 @@ function saveDraggedOrder(container, recipeIndex) {
 
     let time = '';
     if (timeText && timeText !== '-- : --') {
+      // Trasforma "x min y sec" in formato testo da salvare, se vuoi potresti fare parsing più preciso qui
+      // Ma per ora lo salvo così com'è
       time = timeText;
     }
 
