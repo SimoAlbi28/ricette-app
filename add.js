@@ -34,7 +34,7 @@ function addIngredient(data = { name: '', qty: '', unit: '' }) {
   div.classList.add('ingredient-item');
   div.innerHTML = `
     <input type="text" class="ingredient-name" placeholder="Ingrediente" value="${data.name}" />
-    <input type="number" min="0" step="any" class="ingredient-quantity" placeholder="Quantità" value="${data.qty}" />
+    <input type="number" min="0" step="any" class="ingredient-quantity" placeholder="Q" value="${data.qty}" />
     <select class="ingredient-unit">
       <option value="" ${data.unit === '' ? 'selected' : ''}>—</option>
       <option value="g" ${data.unit === 'g' ? 'selected' : ''}>g</option>
