@@ -315,3 +315,155 @@ h1 {
     gap: 6px;
   }
 }
+
+/* Riquadro esterno */
+.outer-recipe-card {
+  border: 2px solid #008079;
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  background-color: #f0fff8;
+}
+
+/* Titolo ricetta sopra il riquadro interno */
+.outer-recipe-title {
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #008079;
+  word-break: break-word; /* per spezzare titoli lunghi */
+}
+
+/* Riquadro interno */
+.recipe-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #ffffff;
+}
+
+/* Riga principale (foto + pulsanti) */
+.main-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+/* Immagine ricetta */
+.recipe-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 10px;
+}
+
+/* Contenitore pulsanti */
+.btns-container {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}
+
+/* Pulsanti */
+button {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-apri {
+  background-color: #00b894;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: #ffeaa7;
+  color: #2d3436;
+}
+
+.btn-danger {
+  background-color: #d63031;
+  color: white;
+}
+
+/* Dettagli ricetta (ingredienti e azioni) */
+.recipe-details {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Ingredienti */
+.ingredients-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Box ingrediente */
+.ingredient-box {
+  padding: 8px;
+  background-color: #d0f5f0;
+  border: 2px solid black;
+  border-radius: 5px;
+  color: #008079;
+  word-break: break-word; /* per testi lunghi */
+}
+
+/* Azioni */
+.actions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Box azione */
+.action-box {
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Timer azione */
+.action-time {
+  font-size: 0.85rem;
+  color: #2d3436;
+}
+
+/* Bottone chiudi */
+.recipe-details .btn-danger {
+  display: block;
+  margin: 10px auto 0 auto;
+}
+
+/* Responsività mobile */
+@media (max-width: 480px) {
+  .main-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .recipe-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .btns-container {
+    justify-content: center;
+  }
+}

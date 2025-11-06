@@ -45,24 +45,73 @@ function loadRecipes() {
   }
 
   recipes.forEach((recipe, index) => {
+    // -------------------- Riquadro esterno --------------------
+    const outerCard = document.createElement('div');
+    outerCard.className = 'outer-recipe-card';
+    Object.assign(outerCard.style, {
+      border: '2px solid #008079',
+      borderRadius: '12px',
+      padding: '10px',
+      marginBottom: '20px',
+      display: 'flex',
+      flexDirection: 'column',
+      backgroundColor: '#f0fff8'
+    });
+
+    // -------------------- Titolo --------------------
+    const title = document.createElement('div');
+    title.className = 'outer-recipe-title';
+    title.textContent = recipe.title.toUpperCase();
+    Object.assign(title.style, {
+      textAlign: 'center',
+      fontWeight: '700',
+      fontSize: '1.2rem',
+      marginBottom: '10px',
+      color: '#008079'
+    });
+    outerCard.appendChild(title);
+
+    // -------------------- Riquadro interno (vecchio card) --------------------
     const card = document.createElement('div');
     card.className = 'recipe-card';
+    Object.assign(card.style, {
+      border: '1px solid #ccc',
+      borderRadius: '8px',
+      padding: '10px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '10px',
+      backgroundColor: '#ffffff'
+    });
 
     // -------------------- RIGA PRINCIPALE --------------------
     const mainRow = document.createElement('div');
     mainRow.className = 'main-row';
+    Object.assign(mainRow.style, {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      flexWrap: 'wrap'
+    });
 
     const img = document.createElement('img');
     img.className = 'recipe-image';
     img.src = recipe.image || defaultImage;
     img.alt = 'Immagine ricetta';
-
-    const title = document.createElement('div');
-    title.className = 'recipe-title';
-    title.textContent = recipe.title.toUpperCase();
+    Object.assign(img.style, {
+      width: '80px',
+      height: '80px',
+      objectFit: 'cover',
+      borderRadius: '8px'
+    });
 
     const btns = document.createElement('div');
     btns.className = 'btns-container';
+    Object.assign(btns.style, {
+      display: 'flex',
+      gap: '5px',
+      flexWrap: 'wrap'
+    });
 
     const openBtn = document.createElement('button');
     openBtn.className = 'btn-apri';
@@ -92,7 +141,6 @@ function loadRecipes() {
     btns.appendChild(delBtn);
 
     mainRow.appendChild(img);
-    mainRow.appendChild(title);
     mainRow.appendChild(btns);
 
     card.appendChild(mainRow);
@@ -102,7 +150,7 @@ function loadRecipes() {
     details.className = 'recipe-details';
     details.style.display = 'none';
 
-    // -------------------- INGREDIENTI --------------------
+    // -------------------- Ingredienti --------------------
     const ingrSectionTitle = document.createElement('h3');
     ingrSectionTitle.textContent = '🧂 Ingredienti';
     Object.assign(ingrSectionTitle.style, {
@@ -190,7 +238,6 @@ function loadRecipes() {
         actionText.textContent = `${i + 1}. ${desc}`;
         actionBox.appendChild(actionText);
 
-        // Gestione timer formattato
         const timeText = formatTimeText(step.time);
 
         const timeSpan = document.createElement('span');
@@ -207,11 +254,8 @@ function loadRecipes() {
     }
 
     details.appendChild(actionsContainer);
-
-    // Abilita drag&drop per le azioni
     enableDragDrop(actionsContainer, index);
 
-    // -------------------- CHIUDI --------------------
     const closeBtn = document.createElement('button');
     closeBtn.className = 'btn-danger';
     closeBtn.textContent = 'Chiudi';
@@ -231,7 +275,6 @@ function loadRecipes() {
 
     details.appendChild(closeBtn);
 
-    // Eventi
     openBtn.addEventListener('click', () => {
       details.style.display = 'flex';
       details.style.flexDirection = 'column';
@@ -239,7 +282,10 @@ function loadRecipes() {
     });
 
     card.appendChild(details);
-    recipeList.appendChild(card);
+
+    // -------------------- Appendo il riquadro interno al riquadro esterno --------------------
+    outerCard.appendChild(card);
+    recipeList.appendChild(outerCard);
   });
 }
 
