@@ -229,6 +229,9 @@ function loadRecipes() {
         actionBox.className = 'action-box';
         actionBox.style.marginBottom = '8px';
 
+        const actionText = document.createElement('p');
+        actionText.className = 'action-text';
+
         let desc;
         if (typeof step === 'object' && step !== null) {
           if (!step.actionText && !step.description) {
@@ -241,8 +244,8 @@ function loadRecipes() {
         }
 
         actionText.textContent = `${i + 1}. ${desc}`;
-        
         actionBox.appendChild(actionText);
+
 
         const timeText = formatTimeText(step.time);
 
