@@ -310,7 +310,6 @@ h2 {
 .btn-add:hover {
   background: #31b0d5;
   box-shadow: 0 10px 30px rgba(49, 176, 213, 0.7);
-  transform: translateY(-2px);
 }
 
 .btn-container {
@@ -327,6 +326,7 @@ h2 {
   flex-grow: 1;
   min-height: 48px;
   font-weight: 600;
+  border: 2px solid black;
   border-radius: 10px;
   border: none;
   padding: 12px 20px;
@@ -341,13 +341,13 @@ h2 {
 .btn-primary {
   background: #28a745;
   color: white;
+  border: 2px solid black;
   box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
 }
 
 .btn-primary:hover {
   background: #218838;
   box-shadow: 0 12px 30px rgba(33, 136, 56, 0.6);
-  transform: translateY(-2px);
 }
 
 .btn-danger {
@@ -359,18 +359,15 @@ h2 {
 .btn-danger:hover {
   background: #c82333;
   box-shadow: 0 10px 25px rgba(200, 35, 51, 0.5);
-  transform: translateY(-2px);
 }
 
 /* Animazione fade in */
 @keyframes fadeInUp {
   0% {
     opacity: 0;
-    transform: translateY(20px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 

@@ -257,7 +257,7 @@ function loadRecipes() {
     enableDragDrop(actionsContainer, index);
 
     const closeBtn = document.createElement('button');
-    closeBtn.className = 'btn-close';
+    closeBtn.className = 'btn-close-bottom'; // classe diversa
     closeBtn.textContent = 'Chiudi';
     Object.assign(closeBtn.style, {
       marginTop: '20px',
@@ -267,29 +267,35 @@ function loadRecipes() {
       padding: '8px 30px',
       fontWeight: '600'
     });
+details.appendChild(closeBtn);
 
-    // Pulsante in alto cambia testo Apri/Chiudi
-      openBtn.addEventListener('click', () => {
-    if (details.style.display === 'none' || details.style.display === '') {
-      details.style.display = 'flex';
-      details.style.flexDirection = 'column';
-      openBtn.textContent = 'Chiudi';
-      openBtn.classList.remove('btn-apri');
-      openBtn.classList.add('btn-close');
-    } else {
-      details.style.display = 'none';
-      openBtn.textContent = 'Apri';
-      openBtn.classList.remove('btn-close');
-      openBtn.classList.add('btn-apri');
-    }
-  });
 
-  closeBtn.addEventListener('click', () => {
+// Appendo il pulsante ai dettagli
+details.appendChild(closeBtn);
+
+// Pulsante in alto cambia testo Apri/Chiudi
+openBtn.addEventListener('click', () => {
+  if (details.style.display === 'none' || details.style.display === '') {
+    details.style.display = 'flex';
+    details.style.flexDirection = 'column';
+    openBtn.textContent = 'Chiudi';
+    openBtn.classList.remove('btn-apri');
+    openBtn.classList.add('btn-close');
+  } else {
     details.style.display = 'none';
     openBtn.textContent = 'Apri';
     openBtn.classList.remove('btn-close');
     openBtn.classList.add('btn-apri');
-  });
+  }
+});
+
+// Pulsante in fondo chiude dettagli
+closeBtn.addEventListener('click', () => {
+  details.style.display = 'none';
+  openBtn.textContent = 'Apri';
+  openBtn.classList.remove('btn-close');
+  openBtn.classList.add('btn-apri');
+});
 
     card.appendChild(details);
 

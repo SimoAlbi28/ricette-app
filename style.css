@@ -128,15 +128,13 @@ h1 {
 
 /* Bottone APRI verde */
 .btn-apri {
-  background-color: #28a745;
+  background-color: #00f52d; 
   color: white;
   border: 2px solid black;
   border-radius: 8px;
-  min-width: 60px;
-  padding: 8px 10px;
-  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  width: 70px;
+  height: 35px;
 }
 
 .btn-apri:hover {
@@ -144,7 +142,7 @@ h1 {
 }
 
 /* Bottoni secondari (Modifica e Elimina) */
-.btn-secondary, .btn-danger {
+.btn-secondary, .btn-danger, .btn-close, .btn-close-bottom {
   min-width: 70px;
   font-size: 14px;
   padding: 8px 0;
@@ -174,7 +172,7 @@ h1 {
 }
 
 .btn-danger:hover {
-  background-color: #c82333; 
+  background-color: #c82323; 
 }
 
 /* Bottone chiudi centrato ma non full width */
@@ -297,7 +295,7 @@ h1 {
     padding: 15px 20px;
     margin-bottom: 18px;
   }
-  .btn-secondary, .btn-danger, .btn-apri {
+  .btn-secondary, .btn-danger, .btn-apri, .btn-close, .btn-close-bottom {
     min-width: 60px;
     font-size: 13px;
     padding: 6px 0;
@@ -455,29 +453,28 @@ button {
   color: white;
   border: 2px solid black;
   border-radius: 8px;
-  padding: 8px 30px;
-  font-weight: 600;
   cursor: pointer;
+  width: 30px;
+  padding: 8px 8px;
 }
 
 .btn-close:hover {
   background-color: #e69500;
 }
 
-/* Pulsante Chiudi in fondo (sempre arancione) */
 .btn-close-bottom {
-  background-color: #f58600;
+  background-color: #f58600; /* arancione */
   color: white;
   border: 2px solid black;
   border-radius: 8px;
-  padding: 8px 30px;
-  font-weight: 600;
   cursor: pointer;
   display: block;
   margin: 15px auto 0 auto; /* centrato */
+  padding: 8px 8px;
+  font-weight: 600;
+  max-width: 100%; /* non uscira' mai dal riquadro */
 }
 
 .btn-close-bottom:hover {
   background-color: #e69500;
 }
-
