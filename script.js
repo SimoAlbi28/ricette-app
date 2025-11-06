@@ -269,16 +269,21 @@ function loadRecipes() {
     });
 
     // Pulsante in alto cambia testo Apri/Chiudi
-    openBtn.addEventListener('click', () => {
-      if (details.style.display === 'none' || details.style.display === '') {
-        details.style.display = 'flex';
-        details.style.flexDirection = 'column';
-        openBtn.textContent = 'Chiudi';
-      } else {
-        details.style.display = 'none';
-        openBtn.textContent = 'Apri';
-      }
-    });
+      openBtn.addEventListener('click', () => {
+    if (details.style.display === 'none' || details.style.display === '') {
+      details.style.display = 'flex';
+      details.style.flexDirection = 'column';
+      openBtn.textContent = 'Chiudi';
+      openBtn.classList.remove('btn-apri');
+      openBtn.classList.add('btn-close');
+    } else {
+      details.style.display = 'none';
+      openBtn.textContent = 'Apri';
+      openBtn.classList.remove('btn-close');
+      openBtn.classList.add('btn-apri');
+    }
+  });
+
 
 // Pulsante in fondo ai dettagli chiude e riporta il pulsante in alto a Apri
 closeBtn.addEventListener('click', () => {
