@@ -284,12 +284,12 @@ function loadRecipes() {
     }
   });
 
-
-// Pulsante in fondo ai dettagli chiude e riporta il pulsante in alto a Apri
-closeBtn.addEventListener('click', () => {
-  details.style.display = 'none';
-  openBtn.textContent = 'Apri';
-});
+  closeBtn.addEventListener('click', () => {
+    details.style.display = 'none';
+    openBtn.textContent = 'Apri';
+    openBtn.classList.remove('btn-close');
+    openBtn.classList.add('btn-apri');
+  });
 
     card.appendChild(details);
 
