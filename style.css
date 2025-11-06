@@ -384,7 +384,7 @@ button {
 }
 
 .btn-danger {
-  background-color: #d63031;
+  background-color: #f58600;
   color: white;
 }
 
@@ -460,7 +460,7 @@ button {
 }
 
 .btn-close {
-  background-color: #ff6a00;
+  background-color: #f58600;
   color: white;
   border: 2px solid black;
   border-radius: 8px;
@@ -472,19 +472,4 @@ button {
 
 .btn-close:hover {
   background-color: #e69500;
-}
-;
-  color: white;
-  border: 2px solid black;
-  border-radius: 8px;
-  padding: 8px 30px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.btn-close:hover {
-  background-color: #e69500;
-  box-shadow: 0 10px 20px rgba(255, 165, 0, 0.4);
-  transform: none; /* niente spostamento */
 }
