@@ -268,18 +268,23 @@ function loadRecipes() {
       fontWeight: '600'
     });
 
-    closeBtn.addEventListener('click', () => {
-      details.style.display = 'none';
-      openBtn.style.display = 'inline-block';
-    });
-
-    details.appendChild(closeBtn);
-
+    // Pulsante in alto cambia testo Apri/Chiudi
     openBtn.addEventListener('click', () => {
-      details.style.display = 'flex';
-      details.style.flexDirection = 'column';
-      openBtn.style.display = 'none';
+      if (details.style.display === 'none' || details.style.display === '') {
+        details.style.display = 'flex';
+        details.style.flexDirection = 'column';
+        openBtn.textContent = 'Chiudi';
+      } else {
+        details.style.display = 'none';
+        openBtn.textContent = 'Apri';
+      }
     });
+
+// Pulsante in fondo ai dettagli chiude e riporta il pulsante in alto a Apri
+closeBtn.addEventListener('click', () => {
+  details.style.display = 'none';
+  openBtn.textContent = 'Apri';
+});
 
     card.appendChild(details);
 
