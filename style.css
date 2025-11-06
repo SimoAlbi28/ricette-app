@@ -55,11 +55,6 @@ h1 {
   margin: 0 auto 25px auto;
 }
 
-.btn-add:hover {
-  background: #31b0d5;
-  box-shadow: 0 10px 30px rgba(49, 176, 213, 0.7);
-}
-
 /* Lista ricette vuota */
 .empty-msg {
   font-style: italic;
@@ -133,12 +128,10 @@ h1 {
   border: 2px solid black;
   border-radius: 8px;
   cursor: pointer;
-  width: 60px;
-  height: 30px;
-}
-
-.btn-apri:hover {
-  background-color: #218838;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  width: 65px;
+  height: 33px;
 }
 
 /* Bottoni secondari (Modifica e Elimina) */
@@ -160,19 +153,11 @@ h1 {
   border: 2px solid black;
 }
 
-.btn-secondary:hover {
-  background-color: #31b0d5;
-}
-
 /* Bottone Elimina: rosso */
 .btn-danger {
   background-color: #ff0000;
   color: white;
   border: 2px solid black;
-}
-
-.btn-danger:hover {
-  background-color: #c82323; 
 }
 
 /* Bottone chiudi centrato ma non full width */
@@ -457,10 +442,8 @@ button {
   height: 30px;
   width: 35px;
   padding: 8px 8px;
-}
-
-.btn-close:hover {
-  background-color: #e69500;
+  padding-bottom: 8px;
+  text-align: center;
 }
 
 .btn-close-bottom {
@@ -474,8 +457,4 @@ button {
   padding: 8px 8px;
   font-weight: 600;
   max-width: 100%; /* non uscira' mai dal riquadro */
-}
-
-.btn-close-bottom:hover {
-  background-color: #e69500;
 }
