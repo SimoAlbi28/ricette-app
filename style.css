@@ -58,7 +58,6 @@ h1 {
 .btn-add:hover {
   background: #31b0d5;
   box-shadow: 0 10px 30px rgba(49, 176, 213, 0.7);
-  transform: translateY(-2px);
 }
 
 /* Lista ricette vuota */
@@ -142,8 +141,6 @@ h1 {
 
 .btn-apri:hover {
   background-color: #218838;
-  box-shadow: 0 10px 30px rgba(33, 136, 56, 0.7);
-  transform: translateY(-2px);
 }
 
 /* Bottoni secondari (Modifica e Elimina) */
@@ -168,7 +165,6 @@ h1 {
 .btn-secondary:hover {
   background-color: #31b0d5;
   box-shadow: 0 10px 30px rgba(49, 176, 213, 0.7);
-  transform: translateY(-2px);
 }
 
 /* Bottone Elimina: rosso */
@@ -181,7 +177,6 @@ h1 {
 .btn-danger:hover {
   background-color: #c82333;
   box-shadow: 0 10px 25px rgba(200, 35, 51, 0.5);
-  transform: translateY(-2px);
 }
 
 /* Bottone chiudi centrato ma non full width */
@@ -275,11 +270,9 @@ h1 {
 @keyframes fadeInUp {
   0% {
     opacity: 0;
-    transform: translateY(20px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
