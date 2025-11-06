@@ -378,11 +378,6 @@ button {
   color: white;
 }
 
-.btn-danger {
-  background-color: #f58600;
-  color: white;
-}
-
 /* Dettagli ricetta (ingredienti e azioni) */
 .recipe-details {
   display: none;
