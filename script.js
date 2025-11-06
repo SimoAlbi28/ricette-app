@@ -257,7 +257,7 @@ function loadRecipes() {
     enableDragDrop(actionsContainer, index);
 
     const closeBtn = document.createElement('button');
-    closeBtn.className = 'btn-danger';
+    closeBtn.className = 'btn-close';
     closeBtn.textContent = 'Chiudi';
     Object.assign(closeBtn.style, {
       marginTop: '20px',
