@@ -459,10 +459,10 @@ button {
   color: white;
   border: 2px solid black;
   border-radius: 8px;
-  padding: 8px 30px;
+  min-width: 60px;       
+  padding: 8px 10px;     
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .btn-close:hover {
