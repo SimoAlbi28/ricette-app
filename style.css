@@ -460,21 +460,37 @@ button {
   max-width: 100%; /* non uscira' mai dal riquadro */
 }
 
-#searchInput {
-  width: 90%;
-  max-width: 400px;
-  margin: 10px auto;
-  display: block;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #06ccc2;
-  font-size: 16px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  transition: 0.2s;
+.search-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-#searchInput:focus {
+#searchInput {
+  width: 100%;
+  padding: 10px 40px 10px 35px; /* 👈 spazio per la lente a sinistra */
+  font-size: 16px;
+  border: 2px solid #008079;
+  border-radius: 8px;
   outline: none;
-  border-color: #00b3b3;
-  box-shadow: 0 0 5px rgba(0,179,179,0.6);
+  background: #fff url('img/search.png') no-repeat 10px center; /* 👈 lente dentro */
+  background-size: 18px;
+}
+
+.reset-btn {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  display: none;
+  color: #008079;
+}
+
+.reset-btn:hover {
+  color: red;
 }

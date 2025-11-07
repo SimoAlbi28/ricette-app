@@ -1,6 +1,7 @@
 const recipeList = document.getElementById('recipeList');
 const btnAdd = document.getElementById('btnAdd');
 const searchInput = document.getElementById('searchInput');
+const resetSearch = document.getElementById('resetSearch');
 
 const defaultImage = 'img/basic.png';
 
@@ -432,16 +433,25 @@ function saveDraggedOrder(container, recipeIndex) {
   recipes[recipeIndex].actions = newOrder;
   localStorage.setItem('recipes', JSON.stringify(recipes));
 }
-
 searchInput.addEventListener('input', () => {
   const searchText = searchInput.value.toLowerCase();
-  const outerCards = document.querySelectorAll('.outer-recipe-card');
+  const recipes = document.querySelectorAll('.outer-recipe-card');
 
-  outerCards.forEach(card => {
+  resetSearch.style.display = searchText ? 'block' : 'none';
+
+  recipes.forEach(card => {
     const titleEl = card.querySelector('.outer-recipe-title');
-    const title = titleEl ? titleEl.textContent.toLowerCase() : '';
-    card.style.display = title.includes(searchText) ? 'flex' : 'none';
+    if (!titleEl) return;
+    const title = titleEl.textContent.toLowerCase();
+    card.style.display = title.includes(searchText) ? 'block' : 'none';
   });
+});
+
+// 🔹 Bottone reset cerca
+resetSearch.addEventListener('click', () => {
+  searchInput.value = '';
+  resetSearch.style.display = 'none';
+  loadRecipes(); // ricarica tutte le ricette
 });
 
 btnAdd.addEventListener('click', () => {
@@ -449,3 +459,4 @@ btnAdd.addEventListener('click', () => {
 });
 
 window.addEventListener('load', loadRecipes);
+
