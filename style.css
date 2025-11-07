@@ -35,6 +35,7 @@ h1 {
   font-size: 1.8rem;
   background-color: #c5fffc;
   border-radius: 10px;
+  border: 2px solid #06ccc2;
 }
 
 /* Bottone aggiungi ricetta */
@@ -466,7 +467,7 @@ button {
   display: block;
   padding: 10px;
   border-radius: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #06ccc2;
   font-size: 16px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   transition: 0.2s;
