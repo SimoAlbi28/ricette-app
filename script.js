@@ -5,7 +5,7 @@ const defaultImage = '/img/basic.png';
 
 // Funzione helper per formattare il tempo in modo corretto
 function formatTimeText(timeStr) {
-  if (!timeStr || timeStr.trim() === '') return '-- : --';
+  if (!timeStr || timeStr.trim() === '') return null;
 
   if (timeStr.includes(':')) {
     const parts = timeStr.split(':');
@@ -20,7 +20,7 @@ function formatTimeText(timeStr) {
         }
       }
     }
-    return '-- : --';
+    return null;
   }
 
   if (/^\d+\s*min$/i.test(timeStr.trim())) {
@@ -32,7 +32,7 @@ function formatTimeText(timeStr) {
     return `${numMatch[0]} min`;
   }
 
-  return '-- : --';
+  return null;
 }
 
 function loadRecipes() {
@@ -223,47 +223,48 @@ function loadRecipes() {
     actionsContainer.className = 'actions-container';
     actionsContainer.style.backgroundColor = '#fcfcfc';
 
-    if (recipe.actions && recipe.actions.length > 0) {
+      if (recipe.actions && recipe.actions.length > 0) {
       recipe.actions.forEach((step, i) => {
-        const actionBox = document.createElement('div');
-        actionBox.className = 'action-box';
-        actionBox.style.marginBottom = '8px';
-
-        const actionText = document.createElement('p');
-        actionText.className = 'action-text';
-
         let desc;
+
         if (typeof step === 'object' && step !== null) {
-          if (!step.actionText && !step.description) {
-            desc = '-- nessuna azione inserita --';
-          } else {
-            desc = step.actionText || step.description;
-          }
+          desc = step.actionText || step.description; // undefined se non c'è nulla
         } else {
-          desc = step || '-- nessuna azione inserita --';
+          desc = step; // stringa o undefined
         }
 
-        actionText.textContent = `${i + 1}. ${desc}`;
-        actionBox.appendChild(actionText);
+        // se desc esiste, allora creiamo l'elemento
+        if (desc) {
+          const actionBox = document.createElement('div');
+          actionBox.className = 'action-box';
+          actionBox.style.marginBottom = '8px';
+
+          const actionText = document.createElement('p');
+          actionText.className = 'action-text';
+          actionText.textContent = `${i + 1}. ${desc}`;
+          actionBox.appendChild(actionText);
+
+          const timeText = formatTimeText(step.time);
+
+          // crea lo span solo se esiste un tempo valido
+          if (timeText) {
+            const timeSpan = document.createElement('span');
+            timeSpan.className = 'action-time';
+            timeSpan.textContent = timeText;
+            actionBox.appendChild(timeSpan);
+          }
 
 
-        const timeText = formatTimeText(step.time);
-
-        const timeSpan = document.createElement('span');
-        timeSpan.className = 'action-time';
-        timeSpan.textContent = timeText;
-        actionBox.appendChild(timeSpan);
-
-        actionsContainer.appendChild(actionBox);
+          actionsContainer.appendChild(actionBox);
+        }
+        // se desc non esiste, non facciamo nulla
       });
-    } else {
-      const noActions = document.createElement('p');
-      noActions.textContent = 'Nessuna azione inserita';
-      actionsContainer.appendChild(noActions);
     }
 
+    // se non ci sono azioni validi, puoi decidere di non mostrare niente
     details.appendChild(actionsContainer);
     enableDragDrop(actionsContainer, index);
+
 
     const closeBtn = document.createElement('button');
     closeBtn.className = 'btn-close-bottom'; // classe diversa
