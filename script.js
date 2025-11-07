@@ -1,7 +1,7 @@
 const recipeList = document.getElementById('recipeList');
 const btnAdd = document.getElementById('btnAdd');
 
-const defaultImage = '/img/basic.png';
+const defaultImage = 'img/basic.png';
 
 // Funzione helper per formattare il tempo in modo corretto
 function formatTimeText(timeStr) {
