@@ -168,6 +168,9 @@ function loadRecipes() {
     const ingrContainer = document.createElement('div');
     ingrContainer.className = 'ingredients-container';
     ingrContainer.style.backgroundColor = '#ffffff';
+    ingrContainer.style.display = 'flex';
+    ingrContainer.style.flexDirection = 'column';
+    ingrContainer.style.alignItems = 'center';
 
     if (recipe.ingredients && recipe.ingredients.length > 0) {
       recipe.ingredients.forEach(ing => {
