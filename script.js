@@ -1,5 +1,6 @@
 const recipeList = document.getElementById('recipeList');
 const btnAdd = document.getElementById('btnAdd');
+const searchInput = document.getElementById('searchInput');
 
 const defaultImage = 'img/basic.png';
 
@@ -39,9 +40,12 @@ function loadRecipes() {
   const recipes = JSON.parse(localStorage.getItem('recipes') || '[]');
   recipeList.innerHTML = '';
 
-  if (recipes.length === 0) {
+    if (recipes.length === 0) {
     recipeList.innerHTML = '<p class="empty-msg">Nessuna ricetta ancora, aggiungine una!</p>';
+    searchInput.style.display = 'none';
     return;
+  } else {
+    searchInput.style.display = 'block';
   }
 
   recipes.forEach((recipe, index) => {
@@ -425,6 +429,17 @@ function saveDraggedOrder(container, recipeIndex) {
   recipes[recipeIndex].actions = newOrder;
   localStorage.setItem('recipes', JSON.stringify(recipes));
 }
+
+searchInput.addEventListener('input', () => {
+  const searchText = searchInput.value.toLowerCase();
+  const outerCards = document.querySelectorAll('.outer-recipe-card');
+
+  outerCards.forEach(card => {
+    const titleEl = card.querySelector('.outer-recipe-title');
+    const title = titleEl ? titleEl.textContent.toLowerCase() : '';
+    card.style.display = title.includes(searchText) ? 'flex' : 'none';
+  });
+});
 
 btnAdd.addEventListener('click', () => {
   window.location.href = 'add.html';

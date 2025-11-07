@@ -458,3 +458,22 @@ button {
   font-weight: 600;
   max-width: 100%; /* non uscira' mai dal riquadro */
 }
+
+#searchInput {
+  width: 90%;
+  max-width: 400px;
+  margin: 10px auto;
+  display: block;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: 0.2s;
+}
+
+#searchInput:focus {
+  outline: none;
+  border-color: #00b3b3;
+  box-shadow: 0 0 5px rgba(0,179,179,0.6);
+}
