@@ -48,6 +48,9 @@ function loadRecipes() {
     searchInput.style.display = 'block';
   }
 
+  // 🔤 ordina le ricette in ordine alfabetico
+  recipes.sort((a, b) => a.title.localeCompare(b.title, 'it', { sensitivity: 'base' }));
+
   recipes.forEach((recipe, index) => {
     // -------------------- Riquadro esterno --------------------
     const outerCard = document.createElement('div');
