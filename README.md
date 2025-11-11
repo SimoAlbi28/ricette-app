@@ -1,5 +1,5 @@
 🍳 Ricette App 🍳 
-- Guida 
+- Guida (Smartphone);
 
 - 🔗 ACCESSO ALL'APP 
 
