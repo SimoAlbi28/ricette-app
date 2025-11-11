@@ -45,3 +45,13 @@ Sul browser (Chrome / Edge / Firefox / Safari):
 
 5️⃣ **RICERCA RAPIDA**  
 - Usa il campo di ricerca nella home per filtrare le ricette in tempo reale
+
+---
+
+<img width="373" height="843" alt="image" src="https://github.com/user-attachments/assets/6523d60c-77de-4b7f-ae17-1a0382e0a3a3" />
+
+---
+
+<img width="373" height="806" alt="image" src="https://github.com/user-attachments/assets/63aacf73-6eb9-4d3c-9877-1f804810b087" />
+
+
