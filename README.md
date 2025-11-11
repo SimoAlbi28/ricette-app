@@ -1,12 +1,12 @@
 🍳 Ricette App 🍳 
-- Guida -
+- Guida 
 
-- 🔗 ACCESSO ALL'APP -
+- 🔗 ACCESSO ALL'APP 
 
 Apri questo link sul tuo browser:
 https://simoalbi28.github.io/ricette-app/index.html
 
-- 📱 INSTALLAZIONE APP SULLA SCHERMATA HOME -
+- 📱 INSTALLAZIONE APP SULLA SCHERMATA HOME 
   
 Sul Browser (Chrome/Edge/Firefox/Safari);
 
@@ -18,7 +18,7 @@ Conferma senza modificare nulla e clicca Aggiungi.
 
 Una volta aggiunta, apparirà un’icona sulla schermata Home e l’app si aprirà come un’app standalone, senza barra degli indirizzi.
 
-- ⚡ FUNZIONI DELL'APP -
+- ⚡ FUNZIONI DELL'APP 
   
 1️⃣ AGGIUNGERE UNA NUOVA RICETTA:
 - Premendo “+ Aggiungi Ricetta” dalla home.
