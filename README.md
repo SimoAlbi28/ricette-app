@@ -50,11 +50,18 @@ Sul browser (Chrome / Edge / Firefox / Safari):
 
 ---
 
-<img width="373" height="806" alt="image" src="https://github.com/user-attachments/assets/63aacf73-6eb9-4d3c-9877-1f804810b087" />
+<img width="635" height="265" alt="image" src="https://github.com/user-attachments/assets/e09ffcc2-b249-483c-a4b5-cb4c3db50de4" />
+
 
 ---
 
-<img width="373" height="843" alt="image" src="https://github.com/user-attachments/assets/6523d60c-77de-4b7f-ae17-1a0382e0a3a3" />
+<img width="628" height="899" alt="image" src="https://github.com/user-attachments/assets/dcc11161-7ffb-4ab4-9185-ed4188e5ebd0" />
+
+---
+
+<img width="626" height="886" alt="image" src="https://github.com/user-attachments/assets/f4793f04-a8d9-401d-8d40-a60700426517" />
+
+
 
 
 
