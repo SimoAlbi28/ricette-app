@@ -27,7 +27,8 @@ Sul browser (Chrome / Edge / Firefox / Safari):
 - Premi **“+ Aggiungi Ricetta”** dalla home;  
 - Inserisci:  
   - **Titolo**;  
-  - **Immagine** (opzionale);  
+  - **Immagine** (opzionale);
+  - **Tempo di Preparazione**; 
   - **Ingredienti**: nome, quantità, unità;  
   - **Azioni**: descrizione + tempo;  
 - Usa **+ Aggiungi Ingrediente** o **+ Aggiungi Azione** per aggiungere più elementi.
