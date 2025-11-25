@@ -7,32 +7,27 @@ const defaultImage = 'img/basic.png';
 
 // Funzione helper per formattare il tempo in modo corretto
 function formatTimeText(timeStr) {
-  if (!timeStr || timeStr.trim() === '') return null;
+  if (!timeStr || timeStr.trim() === '' || timeStr === '--:--') return null;
 
   if (timeStr.includes(':')) {
     const parts = timeStr.split(':');
     if (parts.length === 2) {
-      const min = parseInt(parts[0], 10);
-      const sec = parseInt(parts[1], 10);
-      if (!isNaN(min) && !isNaN(sec)) {
-        if (sec > 0) {
-          return `${min} min ${sec} sec`;
-        } else {
-          return `${min} min`;
-        }
-      }
+      const hours = parseInt(parts[0], 10);
+      const mins = parseInt(parts[1], 10);
+      let result = '';
+      if (hours > 0) result += `${hours} h`;
+      if (hours > 0 && mins > 0) result += ' - ';
+      if (mins > 0) result += `${mins} min`;
+      return result || null; // se entrambi zero, ritorna null
     }
     return null;
   }
 
-  if (/^\d+\s*min$/i.test(timeStr.trim())) {
-    return timeStr.trim();
-  }
+  const minMatch = timeStr.match(/(\d+)\s*min/i);
+  if (minMatch) return `${minMatch[1]} min`;
 
-  const numMatch = timeStr.match(/\d+/);
-  if (numMatch) {
-    return `${numMatch[0]} min`;
-  }
+  const hourMatch = timeStr.match(/(\d+)\s*ora/i);
+  if (hourMatch) return `${hourMatch[1]} h`;
 
   return null;
 }
@@ -78,6 +73,23 @@ function loadRecipes() {
       color: '#008079'
     });
     outerCard.appendChild(title);
+
+    // -------------------- Tempo di preparazione --------------------
+   if (recipe.prepTime) {
+    const prepTimeEl = document.createElement('div');
+    prepTimeEl.className = 'prep-time';
+    prepTimeEl.textContent = `Tempo Medio di Preparazione: ${formatTimeText(recipe.prepTime)}`;
+    Object.assign(prepTimeEl.style, {
+      textAlign: 'center',
+      fontSize: '0.95rem',
+      marginBottom: '10px',
+      color: '#000',       // nero
+      fontWeight: '700',   // grassetto
+      fontStyle: 'italic'  
+    });
+    outerCard.appendChild(prepTimeEl);
+  }
+
 
     // -------------------- Riquadro interno (vecchio card) --------------------
     const card = document.createElement('div');
@@ -262,6 +274,7 @@ function loadRecipes() {
             const timeSpan = document.createElement('span');
             timeSpan.className = 'action-time';
             timeSpan.textContent = timeText;
+            timeSpan.style.color = 'red';
             actionBox.appendChild(timeSpan);
           }
 
@@ -274,8 +287,6 @@ function loadRecipes() {
 
     // se non ci sono azioni validi, puoi decidere di non mostrare niente
     details.appendChild(actionsContainer);
-    enableDragDrop(actionsContainer, index);
-
 
     const closeBtn = document.createElement('button');
     closeBtn.className = 'btn-close-bottom'; // classe diversa

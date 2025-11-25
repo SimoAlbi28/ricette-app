@@ -186,6 +186,7 @@ function loadRecipe(index) {
   if (recipes[index]) {
     const recipe = recipes[index];
     recipeTitleInput.value = recipe.title || '';
+    document.getElementById('prepTime').value = recipe.prepTime || '';
     currentImageBase64 = recipe.image || '';
     if (currentImageBase64) {
       profilePicPreview.src = currentImageBase64;
@@ -209,6 +210,7 @@ function loadRecipe(index) {
 
 function getCurrentData() {
   const title = recipeTitleInput.value.trim();
+  const prepTime = document.getElementById('prepTime').value.trim();
   const ingredients = [];
   document.querySelectorAll('.ingredient-item').forEach(item => {
     const nameInput = item.querySelector('.ingredient-name');
@@ -240,6 +242,7 @@ function getCurrentData() {
 
   return {
     title,
+    prepTime,
     image: currentImageBase64,
     ingredients,
     actions
@@ -293,9 +296,18 @@ function saveRecipe() {
 
     let time = '';
     if (timeSelect === 'Personalizzato') {
-      time = customTime;
+      // valore hh:mm preso dall'input
+      time = customTime; 
     } else {
-      time = timeSelect;
+      // converti i preset in hh:mm
+      switch(timeSelect) {
+        case '5 min': time = '00:05'; break;
+        case '10 min': time = '00:10'; break;
+        case '15 min': time = '00:15'; break;
+        case '30 min': time = '00:30'; break;
+        case '1 ora': time = '01:00'; break;
+        default: time = '00:00'; break;
+      }
     }
 
     if (actionText || time) {
@@ -308,11 +320,13 @@ function saveRecipe() {
     return;
   }
 
+  const prepTime = document.getElementById('prepTime').value.trim();
   const recipes = JSON.parse(localStorage.getItem('recipes') || '[]');
 
   if (editIndex !== null && recipes[editIndex]) {
     recipes[editIndex] = {
       title,
+      prepTime,
       image: currentImageBase64,
       ingredients,
       actions
@@ -320,6 +334,7 @@ function saveRecipe() {
   } else {
     recipes.push({
       title,
+      prepTime,
       image: currentImageBase64,
       ingredients,
       actions
